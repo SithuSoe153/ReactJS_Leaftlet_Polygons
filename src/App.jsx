@@ -1,7 +1,7 @@
 import React from "react";
-import { MapContainer, TileLayer, Polygon } from 'react-leaflet';
+import { MapContainer, TileLayer, Polygon, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { stateData } from './assets/maps/StateData';
+import { stateData } from './assets/maps/Township';
 
 function App() {
 
@@ -25,6 +25,7 @@ function App() {
           const coordinates = parseCoordinates(state.geometry);
 
           if (state.geometry.type === "Polygon") {
+            console.log(state.properties.DT);
             return (
               <Polygon
                 key={idx}
@@ -37,11 +38,15 @@ function App() {
                   color: 'white'
                 }}
                 positions={coordinates}
-              />
+              >
+                <Tooltip sticky>{state.properties.DT}</Tooltip>
+              </Polygon>
+
             );
           } else if (state.geometry.type === "MultiPolygon") {
             return coordinates.map((polygon, index) => (
-              <Polygon
+
+              < Polygon
                 key={`${idx}-${index}`}
                 pathOptions={{
                   fillColor: '#FD8D3C',
@@ -52,7 +57,10 @@ function App() {
                   color: 'white'
                 }}
                 positions={polygon}
-              />
+              >
+                <Tooltip sticky>{state.properties.TS}</Tooltip>
+              </Polygon>
+
             ));
           }
 
@@ -60,7 +68,7 @@ function App() {
         })
       }
 
-    </MapContainer>
+    </MapContainer >
   );
 }
 
